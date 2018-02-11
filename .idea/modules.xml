@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\josea\Desktop\CoreUpgrade\Android\reto1-mobile\app\app.iml" filepath="C:\Users\josea\Desktop\CoreUpgrade\Android\reto1-mobile\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/reto1-mobile.iml" filepath="$PROJECT_DIR$/reto1-mobile.iml" />
+      <module fileurl="file://C:\Users\josea\Desktop\CoreUpgrade\Android\reto1-mobile\reto1-mobile.iml" filepath="C:\Users\josea\Desktop\CoreUpgrade\Android\reto1-mobile\reto1-mobile.iml" />
     </modules>
   </component>
 </project>
