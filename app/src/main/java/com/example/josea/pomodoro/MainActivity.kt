@@ -10,6 +10,7 @@ import android.os.CountDownTimer
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import org.jetbrains.anko.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setTimer(){
         countDownTimer = object : CountDownTimer(secondsRemaining, 1000) {
-            override fun onFinish() = stop()
+            override fun onFinish() = timerFinish()
 
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished/1000
@@ -78,7 +79,11 @@ class MainActivity : AppCompatActivity() {
         textViewTime.text= minutes.toString() + ":" + seconds
         progressBarCircle.progress=(secondsRemaining).toInt()
     }
-
+    private fun timerFinish(){
+        alert( "Es tiempo de un descanso","Tiempo!!") {
+            yesButton {stop()}
+        }.show()
+    }
     private fun stop(){
         if (timerStatus==TimerStatus.STARTED){
             secondsRemaining=(25 * 60 * 1000).toLong()
