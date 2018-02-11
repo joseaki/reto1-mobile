@@ -15,16 +15,23 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    private var secondsRemaining = (25 * 60 *1000).toLong()
+    private val originalMinutes = 1
+    private val breakSeconds=(1*60*1000).toLong()
+
+    private var secondsRemaining = (originalMinutes * 60 *1000).toLong()
 
     private enum class TimerStatus {
         STARTED,
         STOPPED,
         PAUSED
     }
+    private enum class TaskStatus{
+        BREAK,
+        WORK
+    }
 
     private var timerStatus = TimerStatus.STOPPED
-
+    private var taskStatus=TaskStatus.WORK
     private var countDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,18 +45,18 @@ class MainActivity : AppCompatActivity() {
     }
     private fun start_stop(){
         if (timerStatus==TimerStatus.STOPPED){
-            secondsRemaining=(25 * 60 * 1000).toLong()
+            secondsRemaining=(originalMinutes * 60 * 1000).toLong()
             imageViewStartStop.setImageResource(R.drawable.icon_stop)
             imageViewPause.visibility= View.VISIBLE
             setProgressBar()
             timerStatus=TimerStatus.STARTED
-            setTimer()
+            setTimer(secondsRemaining)
         }else if(timerStatus==TimerStatus.PAUSED){
             imageViewPause.visibility= View.VISIBLE
             imageViewStartStop.setImageResource(R.drawable.icon_stop)
             secondsRemaining=(secondsRemaining*1000)
             timerStatus=TimerStatus.STARTED
-            setTimer()
+            setTimer(secondsRemaining)
         }else{
             stop()
         }
@@ -60,10 +67,9 @@ class MainActivity : AppCompatActivity() {
         countDownTimer!!.cancel()
         imageViewPause.visibility= View.INVISIBLE
     }
-    private fun setTimer(){
-        countDownTimer = object : CountDownTimer(secondsRemaining, 1000) {
+    private fun setTimer(secondsTimer:Long){
+        countDownTimer = object : CountDownTimer(secondsTimer, 1000) {
             override fun onFinish() = timerFinish()
-
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished/1000
                 updateCountdownUI()
@@ -80,15 +86,27 @@ class MainActivity : AppCompatActivity() {
         progressBarCircle.progress=(secondsRemaining).toInt()
     }
     private fun timerFinish(){
-        alert( "Es tiempo de un descanso","Tiempo!!") {
-            yesButton {stop()}
-        }.show()
+        if(taskStatus==TaskStatus.WORK){
+            taskStatus=TaskStatus.BREAK
+            timerStatus=TimerStatus.STOPPED
+            alert( "Es tiempo de un descanso","Tiempo!!") {
+                yesButton {breakTime()}
+            }.show()
+        }else{
+            taskStatus=TaskStatus.WORK
+            alert( "Tu descanso termino, A trabajar!!","Tiempo!!") {
+                yesButton {start_stop()}
+            }.show()
+        }
+    }
+    private fun breakTime(){
+        setTimer(breakSeconds)
+        stop()
     }
     private fun stop(){
         if (timerStatus==TimerStatus.STARTED){
-            secondsRemaining=(25 * 60 * 1000).toLong()
+            secondsRemaining=(originalMinutes * 60 * 1000).toLong()
             updateCountdownUI()
-            textViewTime.text="25:00"
             timerStatus=TimerStatus.STOPPED
             imageViewPause.visibility=View.INVISIBLE
             imageViewStartStop.setImageResource(R.drawable.icon_start)
