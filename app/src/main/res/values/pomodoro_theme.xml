@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="PomodoroTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#f23d29</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#af2c1d</item>
         <item name="colorAccent">#e26051</item>
-        <item name="android:background">#f23d29</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name = "android:windowActionBar">false</item>
         <item name = "android:windowNoTitle">true</item>
     </style>

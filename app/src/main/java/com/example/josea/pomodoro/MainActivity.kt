@@ -1,22 +1,33 @@
 package com.example.josea.pomodoro
 
+import android.annotation.TargetApi
+import android.app.*
+import android.content.Context
+import android.graphics.Color
 import android.opengl.Visibility
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.os.CountDownTimer
+import android.support.annotation.RequiresApi
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import org.jetbrains.anko.*
 import kotlinx.android.synthetic.main.activity_main.*
+import android.content.Intent
+import android.support.v4.app.NotificationCompat
 
 
 class MainActivity : AppCompatActivity() {
+    private var notificationManager: NotificationManager? = null
+
     private val originalMinutes = 1
     private val breakSeconds=(1*60*1000).toLong()
+
 
     private var secondsRemaining = (originalMinutes * 60 *1000).toLong()
 
@@ -40,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         initview()
     }
     private fun initview(){
+        setProgressBar()
         imageViewStartStop.setOnClickListener({start_stop()})
         imageViewPause.setOnClickListener({pause()})
     }
@@ -89,20 +101,28 @@ class MainActivity : AppCompatActivity() {
         if(taskStatus==TaskStatus.WORK){
             taskStatus=TaskStatus.BREAK
             timerStatus=TimerStatus.STOPPED
-            alert( "Es tiempo de un descanso","Tiempo!!") {
+            var x=alert( "Es tiempo de un descanso","Tiempo!!") {
                 yesButton {breakTime()}
-            }.show()
+            }.build()
+            x.setCancelable(false)
+            x.setCanceledOnTouchOutside(false)
+            x.show()
         }else{
             taskStatus=TaskStatus.WORK
-            alert( "Tu descanso termino, A trabajar!!","Tiempo!!") {
+            val x=alert( "Tu descanso termino, A trabajar!!","Tiempo!!") {
                 yesButton {start_stop()}
-            }.show()
+            }.build()
+            x.setCancelable(false)
+            x.setCanceledOnTouchOutside(false)
+            x.show()
         }
     }
+
     private fun breakTime(){
         setTimer(breakSeconds)
         stop()
     }
+
     private fun stop(){
         if (timerStatus==TimerStatus.STARTED){
             secondsRemaining=(originalMinutes * 60 * 1000).toLong()

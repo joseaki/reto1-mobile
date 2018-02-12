@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="25:00"
-        android:textColor="@color/colorYellow"
+        android:textColor="@color/colorGray"
         android:textSize="40sp" />
 
     <ImageView
