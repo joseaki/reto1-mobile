@@ -25,8 +25,8 @@ import android.support.v4.app.NotificationCompat
 class MainActivity : AppCompatActivity() {
     private var notificationManager: NotificationManager? = null
 
-    private val originalMinutes = 1
-    private val breakSeconds=(1*60*1000).toLong()
+    private val originalMinutes = 25
+    private val breakSeconds=(5*60*1000).toLong()
 
 
     private var secondsRemaining = (originalMinutes * 60 *1000).toLong()
@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         initview()
     }
     private fun initview(){
-        setProgressBar()
         imageViewStartStop.setOnClickListener({start_stop()})
         imageViewPause.setOnClickListener({pause()})
     }
@@ -94,14 +93,14 @@ class MainActivity : AppCompatActivity() {
     private fun updateCountdownUI(){
         val minutes=(secondsRemaining/60).toInt()
         val seconds=(secondsRemaining%60).toInt()
-        textViewTime.text= minutes.toString() + ":" + seconds
+        textViewTime.text= minutes.toString() + ":" + String.format("%02d",seconds)
         progressBarCircle.progress=(secondsRemaining).toInt()
     }
     private fun timerFinish(){
         if(taskStatus==TaskStatus.WORK){
             taskStatus=TaskStatus.BREAK
             timerStatus=TimerStatus.STOPPED
-            var x=alert( "Es tiempo de un descanso","Tiempo!!") {
+            var x=alert( "Es tiempo de un descanso de 5 min","Tiempo!!") {
                 yesButton {breakTime()}
             }.build()
             x.setCancelable(false)
@@ -125,7 +124,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun stop(){
         if (timerStatus==TimerStatus.STARTED){
-            secondsRemaining=(originalMinutes * 60 * 1000).toLong()
+            secondsRemaining=(originalMinutes * 60).toLong()
             updateCountdownUI()
             timerStatus=TimerStatus.STOPPED
             imageViewPause.visibility=View.INVISIBLE
